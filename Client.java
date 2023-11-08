@@ -27,7 +27,9 @@ public class Client {
 			din = new DataInputStream(socket.getInputStream());
 			dout = new DataOutputStream(socket.getOutputStream());
 			int numberOfMessages = din.readInt();
+			System.out.printf("Number of messages: %d\n", numberOfMessages);
 			int seed = din.readInt();
+			System.out.printf("Seed: %d\n", seed);
 			Random random = new Random(seed);
 			while (numberOfMessages > numOfSentMessages) {
 				int nextNumber = random.nextInt();
