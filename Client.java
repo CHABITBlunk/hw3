@@ -1,11 +1,15 @@
 package cs250.hw3;
 
 import java.net.*;
+import java.util.Random;
 import java.io.*;
 
 public class Client {
 	private static Socket socket;
 	private static DataInputStream din = null;
+	private static DataOutputStream dout = null;
+	private static long senderSum = 0;
+	private static int numOfSentMessages = 0;
 
 	public static void main(String[] args) {
 		String address = null;
@@ -21,10 +25,17 @@ public class Client {
 			socket = new Socket(address, portNumber);
 			System.out.println("Connected to Server!");
 			din = new DataInputStream(socket.getInputStream());
-			int firstInt = din.readInt();
-			int secondInt = din.readInt();
-			System.out.println("Message from server: " + firstInt);
-			System.out.println("Message from server: " + secondInt);
+			dout = new DataOutputStream(socket.getOutputStream());
+			int numberOfMessages = din.readInt();
+			int seed = din.readInt();
+			Random random = new Random(seed);
+			while (numberOfMessages > numOfSentMessages) {
+				int nextNumber = random.nextInt();
+				senderSum += nextNumber;
+				dout.writeInt(nextNumber);
+				dout.flush();
+				numOfSentMessages++;
+			}
 			System.out.println("Terminating.");
 		} catch (IOException e) {
 			System.err.println("Fatal Connection Error!");
