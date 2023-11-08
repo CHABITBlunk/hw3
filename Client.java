@@ -33,7 +33,9 @@ public class Client {
 				int nextNumber = random.nextInt();
 				senderSum += nextNumber;
 				dout.writeInt(nextNumber);
+				System.out.printf("Sending %d to server... ", nextNumber);
 				dout.flush();
+				System.out.println("Sent!");
 				numOfSentMessages++;
 			}
 			System.out.println("Terminating.");
